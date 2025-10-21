@@ -1,6 +1,7 @@
 import csv
 import json
 from pymongo import MongoClient
+import re 
 
 # --- CONFIGURATION ---
 CSV_FILE_PATH = "/home/elvie/Documents/activeteamsdatascript/ActiveTeams spreadsheet - All People.csv"  # path to your CSV file
@@ -12,12 +13,12 @@ COLLECTION_NAME = "people"
 def transform_values(row):
     """Transforms specific field values according to given rules."""
     new_row = {}
+
     for key, value in row.items():
         if isinstance(value, str):
-            # Normalize key spacing and apply conversions (case-insensitive)
             key_lower = key.strip().lower()
 
-            # Match by key name instead of text in value
+            # Rename leader fields
             if key_lower == "leader @12":
                 key = "Leader @1"
             elif key_lower == "leader @144":
@@ -25,12 +26,43 @@ def transform_values(row):
             elif key_lower == "leader @ 1728":
                 key = "Leader @144"
 
+            # Rename 'Names' → 'Name'
+            elif key_lower == "names":
+                key = "Name"
+
+            # Skip duplicate 'Name'
+            elif key_lower == "name":
+                continue
+
+            # Skip 'Member Status'
+            elif key_lower == "member status":
+                continue
+            
+            elif key_lower == "id":
+                continue
+            
+            # Skip all service-related fields
+            elif re.search(r"service", key_lower):
+                continue
+
         new_row[key] = value
-        
-        # if "Leader @1728" not in new_row:
-        #     new_row["Leader @1728"] = ""
-    
-    return new_row
+
+    # --- Reorder leaders and ensure Leader @1728 exists ---
+    ordered_row = {}
+    leader_order = ["Leader @1", "Leader @12", "Leader @144", "Leader @1728"]
+
+    # Add leaders first (in correct order)
+    for leader_key in leader_order:
+        if leader_key in new_row:
+            ordered_row[leader_key] = new_row.pop(leader_key)
+        elif leader_key == "Leader @1728":
+            ordered_row[leader_key] = ""
+
+    # Add all remaining fields afterward
+    for key, value in new_row.items():
+        ordered_row[key] = value
+
+    return ordered_row  # ✅ this is the final cleaned row
 
 def csv_to_json(csv_file_path):
     """Reads CSV and converts each row to a transformed dict (JSON-style)."""
