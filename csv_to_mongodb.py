@@ -6,8 +6,8 @@ import re
 # --- CONFIGURATION ---
 CSV_FILE_PATH = "/home/elvie/Documents/activeteamsdatascript/ActiveTeams spreadsheet - All People.csv"  # path to your CSV file
 MONGO_URI = "mongodb+srv://activeteams:helloactiveteams@active-teams.ykghvqr.mongodb.net/"  # or your Atlas URI
-DB_NAME = "testing-data-active-teams"
-COLLECTION_NAME = "people"
+DB_NAME = "active-teams-db"
+COLLECTION_NAME = "People"
 # ----------------------
 
 def transform_values(row):
