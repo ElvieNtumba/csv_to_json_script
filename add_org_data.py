@@ -9,7 +9,7 @@ def add_organization_to_all_collections(
     mongodb_uri: str,
     database_name: str,
     organization_value: str = "Active Church",
-    field_name: str = "organization",
+    field_name: str = "Organization",
     dry_run: bool = True,
     batch_size: int = 1000
 ):
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     MONGODB_URI = "mongodb+srv://activeteams:helloactiveteams@active-teams.ykghvqr.mongodb.net/"
     DATABASE = "test-data-active-teams"
     ORG_VALUE = "Active Church"
-    FIELD_NAME = "organization"
+    FIELD_NAME = "Organization"
 
     add_organization_to_all_collections(
         mongodb_uri=MONGODB_URI,

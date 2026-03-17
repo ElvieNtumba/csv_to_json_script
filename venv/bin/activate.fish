@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/elvie/Documents/activeteamsdatascript/venv
+set -gx VIRTUAL_ENV /home/elvientumba/Documents/ActiveteamsScripts/csv_to_json_script/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH
